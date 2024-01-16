@@ -1,5 +1,7 @@
-# taller_r_uahc
-Taller de introducción al análisis de datos en R, Enero de 2024
+# Taller de introducción al análisis de datos en R
+Universidad Academia de Humanismo Cristiano
+
+Enero de 2024
 
 
 ## Programa:
