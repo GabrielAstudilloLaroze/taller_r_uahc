@@ -59,78 +59,7 @@ bourdieu_df$libros
 
 bourdieu_df$años_publicacion
 
-
-### CON LOS DATOS ORGANIZADOS PODEMOS EMPEZAR A ANALIZAR
-
-# Descriptivos:
-
-# Media:  mean()
-# Mediana: median()
-# Mínimo: max() 
-# Máximo: min()
-# Desviación estándar: sd()
-
-
-
-#### En vez de escribir los datos dentro de R, podemos cargarlos desde diferentes formatos
-
-# Desde Excel: librerías readxl y openxlsx
-
-# SPSS: haven o foreign
-
-# Formatos nativos de R (*.R o *.Rdata) no necesitan librerías
-
-# Formatos de texto plano como CSV traen preinstaladas librerías para su uso.  
-
-
-
 save(bourdieu_df, file="bourideu_df.Rdata")
 
-load("desiguales.Rdata")
 
-mean(desiguales$percepcion_desigualdad_general)
-
-
-#####
-#
-#
-#     función(dataframe $ variable)
-#
-#
-###
-
-
-
-
-# Distribución de variables cuantitativas: summary()
-
-# Frecuencia: table()
-
-# Porcentaje: prop.table(table())
-
-
-prop.table(table(desiguales$clase))*100
-
-
-
-
-
-
-
-
-#######################
-#
-#
-## Actividad aplicada:
-#
-#
-#######################
-
-
-# Seleciona una de las siguientes bases de datos e impórtala a R
-
-# 1. Encuesta cep Diciembre de 2019 (.SPSS)
-# 2. Encuesta CASEN (.CSV)
-
-# Selecciona una variable contínua y calcular la media y desviación estándar
-# Una variable categórica y construir una tabla de proporciones.
+load("bourideu_df.Rdata")
