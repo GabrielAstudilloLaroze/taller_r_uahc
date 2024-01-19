@@ -1,0 +1,202 @@
+---
+title: "Módulo 7: Exportación de resultados mediante Rmarkdown"
+author: "Gabriel Astudillo"
+output: html_document # aquí se puede modificar el tipo de documento de salida 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+#Para exportar a pdf, es necesario tener instalado tinytex 
+
+# install.packages("tinytex")
+```
+
+#  Podemos poner títulos!
+
+## y subtítulos
+
+
+O,  texto normal.
+
+
+
+
+
+Primero cargamos nuestras librerías y dataframe dentro de un chunk
+
+
+
+```{r include=FALSE}
+library(tidyverse)
+
+load("desiguales.R")
+```
+
+Luego, dentro de otro chunk podemos hacer operaciones: pre preocesamiento, gráficos, etc.
+
+```{r}
+
+desiguales%>%
+ggplot(aes(percepcion_desigualdad_oportunidades,
+           percepcion_desigualdad_general))+
+  geom_jitter(size=3,
+             alpha=.1,
+             colour="purple")+
+  geom_smooth()+
+  theme_minimal()
+
+
+```
+
+
+## Y qué podemos hacer para visualizar tablas?
+
+Veamos una tabla 'cruda', tal como se imprime en la consola:
+
+```{r}
+
+desiguales%>%
+  group_by(Genero)%>%
+  summarise(percepcion_desigualdad_general=mean(percepcion_desigualdad_general))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+La librería kableExtra es necesaria para que las tablas queden en formato más amable a la lectura.
+
+```{r}
+# install.packages("kableExtra")
+library(kableExtra)
+
+desiguales%>%
+  group_by(Genero)%>%
+  summarise(percepcion_desigualdad_general=mean(percepcion_desigualdad_general))%>%
+  kable("pipe") # "pipe" es un tipo de tabla.
+```
+
+
+
+
+También podemos manejar otros aspectos de la tabla
+
+```{r}
+desiguales%>%
+  group_by(Genero)%>%
+  summarise(percepcion_desigualdad_general=mean(percepcion_desigualdad_general))%>%
+  kable("pipe",
+        digits=2,
+        col.names = c("Género","Media percepción de desigualdad general")) 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Comunicar un modelo de regresión
+
+Primero definimos el modelo.
+
+```{r}
+reg_model<-lm(percepcion_desigualdad_general~ percepcion_desigualdad_regiones  + 
+     percepcion_desigualdad_ingresos,
+   data= desiguales)
+```
+
+Luego, vamos a utilizar la librería stargazer para exportar los resultados
+
+```{r}
+# install.packages("stargazer")
+
+library(stargazer)
+
+```
+
+```{r results='asis'}
+
+stargazer(reg_model,type="html")
+
+```
+
+
+También podemos incluir más modelos
+
+
+```{r}
+model1<-lm(percepcion_desigualdad_general~ percepcion_desigualdad_oportunidades,
+   data= desiguales)
+
+model2<-lm(percepcion_desigualdad_general~ percepcion_desigualdad_oportunidades + percepcion_desigualdad_ingresos,
+   data= desiguales)
+```
+
+
+```{r results='asis'}
+
+stargazer(model1,model2,type="latex", header = FALSE)
+
+```
+
+
+
+
+
+
+
+# Parámetros específicos de Rmarkdown:
+
+* echo: nos permite controlar si es que queremos que el documento final muestre el código o no.
+* include: si es que el documento final muestra el resultado del proceso o no
+
+
+# Actividad aplicada:
+
+
+Tomando los resultados del modelo de regresión lineal de ayer (Ingreso de ocupación principal ~ edad + grupo ocupacional + horas trabajadas), incluyendo la carga de los datos, el pre procesamiento  y los resultados del modelo, crea un documento Rmd para compartir los resultados.
+
+Para esto, algunas consideraciones:
+* El formato del documento debe coincidir con el de stargazer (html / latex).
+* Debes ir a buscar el código para importar el dataframe de casen.
+* Recuerda incluir el pre-procesamiento de los datos.
+
+
+
+
+
